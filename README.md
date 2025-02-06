@@ -1,164 +1,102 @@
-# Neural-Network-Framework-from-Scratch
-BSc project - in-depth exploration and implementation of neural networks from the ground up.
+# Neural Network Framework from Scratch
 
-## Project Overview
+This repository contains a fully implemented neural network framework built from scratch, including training and evaluation on multiple datasets. The framework supports standard feedforward networks and a variation of ResNet with skip connections. The goal of this project was to understand deep learning frameworks' inner workings, such as backpropagation, optimization techniques, and hyperparameter tuning.
 
-In this project, we present an in-depth exploration and implementation of neural networks from the ground up. Our endeavor is not merely academic—it's a proof of proficiency in the core technologies underlying modern AI. By developing the softmax regression loss function, applying Stochastic Gradient Descent (SGD) with momentum, and experimenting with both standard and Residual Neural Network (ResNet) architectures, we seek to demystify the internal mechanisms of deep learning frameworks, illustrate the nuances of back-propagation, and evaluate the influence of hyperparameter tuning on model performance.
+## Features
+- Fully connected feedforward neural networks (Standard NN)
+- Residual Neural Networks (ResNet)
+- Gradient testing for verification
+- Softmax regression implementation
+- SGD optimizer with momentum
+- Hyperparameter tuning and grid search
+- Support for multiple datasets (Peaks, GMM, SwissRoll)
 
-## Contents
+## Mathematical Formulation
+The neural network is trained by minimizing the softmax loss function:
 
-- [Neural Network Framework from Scratch](#neural-network-framework-from-scratch-an-in-depth-machine-learning-initiative)
-  - [Project Overview](#project-overview)
-  - [Contents](#contents)
-  - [Introduction](#introduction)
-  - [Implementation Overview](#implementation-overview)
-  - [Mathematical Foundations](#mathematical-foundations)
-    - [Logistic Regression and Softmax Function](#logistic-regression-and-softmax-function)
-    - [Neural Network Architecture](#neural-network-architecture)
-    - [Backpropagation and Gradient Descent](#backpropagation-and-gradient-descent)
-    - [Loss Functions](#loss-functions)
-  - [Technical Breakdown](#technical-breakdown)
-    - [Gradient Verification](#gradient-verification)
-    - [SGD Optimization](#sgd-optimization)
-    - [Softmax Objective Minimization](#softmax-objective-minimization)
-    - [Architectural Insights](#architectural-insights)
-  - [Experimental Insights](#experimental-insights)
-    - [Peaks Data Classification](#peaks-data-classification)
-    - [Gaussian Mixture Model (GMM) Challenge](#gaussian-mixture-model-gmm-challenge)
-  - [Conclusion](#conclusion)
-  - [Execution Guide](#execution-guide)
-
-## Introduction
-
-Unlocking the intricacies within deep learning frameworks can significantly bolster a model's development and troubleshooting capabilities. As part of a scientific computing course, this project targets the foundational pillars of neural network theory to create a classification model that learns to distinguish between small vector groups given distinct datasets.
-
-## Implementation Overview
-
-The codebase is designed to be modular and transparent, showcasing the neural network's development with comprehensive gradient tests and optimization strategies.
-
-- `nn.py`: The core script encapsulating the neural network logic, gradient verification, and optimization algorithms.
-- `/reports`: Detailed documentation of each project phase, providing a narrative of testing methods and outcomes.
-- `/data`: The datasets leveraged during model training and evaluation stages.
-
-## Mathematical Foundations
-
-This neural network project is rooted deeply in mathematical concepts, which form the bedrock of our algorithmic implementation. The following is a summary of the key mathematical principles applied throughout the development of our neural network model.
-
-### Logistic Regression and Softmax Function
-
-The project starts with logistic regression and extends to multinomial logistic regression or the softmax function for multi-class classification:
-
-- **Logistic Regression**:
-
-  $$
-  \sigma(\mathbf{x}, \mathbf{w}) = \frac{1}{1 + e^{-\mathbf{x}^T \mathbf{w}}}
-   $$
-
-  The logistic function is employed to model the probability of binary outcomes, which in our network's final layer extends to the softmax function for multi-class scenarios.
-
-- **Softmax Function**:
-
-  $$
-  P(y = j | \mathbf{x}) = \frac{e^{\mathbf{x}^T \mathbf{w}_j}}{\sum_{k=1}^{K} e^{\mathbf{x}^T \mathbf{w}_k}}
-  $$
-
-  For classification tasks, the softmax function computes the probabilities of each class over all possible classes.
-
-### Neural Network Architecture
-
-The architecture of a neural network can be expressed through a series of transformations of input data `x` using learned weights `θ`:
-
-- **Layer-wise Transformation**:
-
-  $$ \mathbf{x}^{(l+1)} = f_l(\theta^{(l)}, \mathbf{x}^{(l)}) $$
-
-  Each layer `l` applies a function `f` to the input data `x`, parameterized by weights `θ`.
-
-- **Activation Functions**:
-
-  - **ReLU**: \( \text{ReLU}(x) = \max(0, x) \) with its gradient \( \text{ReLU}'(x) = \begin{cases} 1 & \text{if } x > 0 \\ 0 & \text{otherwise} \end{cases} \)
-
-  - **Softmax**: As previously defined for multi-class output.
-
-### Backpropagation and Gradient Descent
-
-The backpropagation algorithm is vital for training neural networks, which involves computing gradients of the loss function with respect to the weights:
-
-- **Gradient Computation**:
-
-  $$ \frac{\partial L}{\partial W^{(l)}} = \frac{\partial L}{\partial y^{(L)}} \frac{\partial y^{(L)}}{\partial y^{(l)}} \frac{\partial y^{(l)}}{\partial W^{(l)}} $$
-
-  The above chain rule allows the computation of gradients layer by layer, from the output back to the inputs.
-
-- **SGD Optimization**:
-
-  In the context of SGD, the weight update rule is mathematically described by:
-
-  $$ W_{t+1} = W_t - \eta \nabla L(W_t) $$
-
-  where `η` is the learning rate and `∇L(W_t)` is the gradient of the loss function with respect to the weights at step `t`.
-
-### Loss Functions
-
-- **Cross-Entropy Loss**: For multi-class classification, we implement the cross-entropy loss, which for the softmax output is defined as:
-
-  $$ L(W) = -\frac{1}{m} \sum_{i=1}^{m} \sum_{j=1}^{l} t_{ij} \log(p_{ij}) $$
-
-  where `m` is the number of samples, `l` is the number of labels, `t` is the target label, and `p` is the predicted probability.
-
-These mathematical principles are meticulously encoded into our neural network's implementation, enabling it to learn from data and make accurate predictions.
-
-
-## Technical Breakdown
-
-### Gradient Verification
-
-We established the accuracy of our gradient calculations—a cornerstone for any optimization process—via gradient tests for both the softmax regression loss function and the network's parameters.
-
-### SGD Optimization
-
-Our custom-built SGD optimizer, enhanced with momentum, showcased its capability in efficiently locating the objective function's minima, validated through the resolution of a least squares problem.
-
-### Softmax Objective Minimization
-
-The softmax function minimization was achieved using our SGD optimizer on multi-class classification tasks like "Peaks Data" and "GMM". Extensive hyperparameter tuning via grid search enabled the fine-tuning of model performance.
-
-### Architectural Insights
-
-We implemented and compared two neural network designs:
-- **Standard Neural Network**: A traditional structure with fully connected layers followed by activation functions, validated through forward and backward propagation.
-- **Residual Neural Network (ResNet)**: By integrating skip connections, we enabled the construction of deeper architectures, sidestepping the vanishing gradient dilemma and boosting the model's performance.
-
-## Experimental Insights
-
-### Peaks Data Classification
-
-The network architectures were first evaluated on the Peaks data problem:
-- **Standard NN**: A testing accuracy of approximately 56.5% was realized, laying the foundation for model evaluation.
-- **ResNet**: Demonstrated superior performance over the standard architecture, thanks to the integration of skip connections that enhanced learning capability.
-
-### Gaussian Mixture Model (GMM) Challenge
-
-The GMM data problem provided a more complex scenario for evaluating our network's learning capacity. Different configurations and hyperparameters were experimented with, leading to insights on the network's adaptability and learning efficiency. The results clearly demonstrate the network's capability to learn, achieving impressive accuracy levels as visualized in the attached graphs.
-
-![Learning Progression on GMM Data](/path/to/learning_progression_gmm.png)
-
-*The graphs elucidate the decline in loss and the corresponding increase in accuracy, indicating successful learning.*
-
-## Conclusion
-
-This deep dive into neural network development underscores the criticality of foundational knowledge in optimizing AI algorithms and network architectures. The tangible learning demonstrated by our model is a testament to the effective application of theoretical concepts in a practical setting—making this project a significant portfolio piece for aspiring AI professionals.
-
-## Execution Guide
-
-Prerequisites include Python 3.x. Clone the repository, and navigate to the project directory:
-
-```bash
-python nn.py
+```math
+L(\{\theta_l\}_{l=1}^{L}) = \frac{1}{m} \sum_{i=1}^{m} \ell(\theta^{(L)}, x_i^{(L)}, y_i)
 ```
 
----
+Where:
 
+```math
+\ell() \text{ is the softmax objective function}
+```
 
+```math
+x_i^{(1)} \text{ represents the input data}
+```
 
+- The network layers are defined recursively as:
+### Standard Feedforward Network:
+```math
+f(\theta^{(l)}, x_i^{(l)}) = \sigma(W^{(l)} x_i^{(l)} + b^{(l)})
+```
+
+### Residual Network:
+```math
+f(\theta^{(l)}, x_i^{(l)}) = x_i^{(l)} + W_2^{(l)} \sigma(W_1^{(l)} x_i^{(l)} + b_1^{(l)}) + b_2^{(l)}
+```
+
+## Implementation
+The core implementation is divided into the following files:
+- `nn.py`: Contains the implementation of the neural network architecture, including forward and backward propagation.
+- `main.py`: Runs experiments on different datasets and evaluates model performance.
+
+### Optimizer (SGD with Momentum)
+The optimization of the network is done using Stochastic Gradient Descent (SGD) with momentum:
+
+```math
+v_t = \beta v_{t-1} + (1-\beta) \nabla_{\theta} J(\theta)
+```
+```math
+\theta = \theta - \alpha v_t
+```
+
+where \( \alpha \) is the learning rate and \( \beta \) is the momentum term.
+
+### Gradient Testing
+The correctness of the gradients was validated using the first-order and second-order Taylor approximations. The gradient test is implemented under the `GradientTest` class.
+
+## Datasets
+This framework has been tested on multiple datasets:
+1. **Peaks Data (2D, 5 Classes)**
+2. **GMM Data (5D, 5 Classes)**
+3. **SwissRoll Data (2D, 2 Classes)**
+
+### Best Performance Summary
+- **Peaks Dataset:** Standard NN achieves ~56.5% accuracy, while ResNet outperforms it with higher stability.
+- **GMM Dataset:** Easier to classify; both architectures perform well, but depth variations impact performance.
+
+## Hyperparameter Tuning
+A grid search was performed with the following parameters:
+- Learning rate \( \alpha \in \{1, 0.5, 0.1, 0.01, 0.001\} \)
+- Batch sizes \( \in \{1, 10, 50, 100, 500, 1000\} \)
+- Number of layers: Varies for Standard NN and ResNet
+
+Best results were obtained with:
+- Batch size: 50-100
+- Learning rate: 0.5-0.1
+- Alpha decay applied every 100 iterations resulted in smoother convergence.
+
+## Usage
+To train the network, run the following:
+```bash
+python main.py --dataset peaks --epochs 1000 --batch_size 100 --lr 0.1
+```
+
+For gradient testing:
+```bash
+python main.py --test_gradients
+```
+
+## Results and Observations
+1. **Gradient tests confirmed correctness of backpropagation implementation.**
+2. **Smaller batch sizes led to unstable training, while larger batches improved stability.**
+3. **ResNet consistently outperformed Standard NN due to skip connections.**
+4. **Alpha decay improved training efficiency and convergence.**
+
+## Conclusion
+This project demonstrates the feasibility of implementing a neural network framework from scratch, including forward and backward propagation, optimization, and dataset classification. The results align with expected deep learning behaviors, highlighting the benefits of architectures like ResNet and hyperparameter tuning.
 
